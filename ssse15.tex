@@ -13,9 +13,10 @@
 
 
 \begin{document}
-%
+%\bstctlcite{IEEEexample:BSTcontrol}
+
 % paper title
-\title{A Technical Specification for\\Research Software Sustainability}
+\title{A Workflow for Sustainable Research Software}
 
 
 % author names and affiliations
@@ -72,7 +73,9 @@ In this paper, we propose a high-level technical specification as a
 starting point for a service that enables software sustainability and
 reproducibility, presenting cyberinfrastructure and associated
 workflow for a service which would enable such a specification to be
-verified and validated. In addition to addressing a pressing need for
+verified and validated. Furthermore, we proposed how it could be
+adopted and implemented into the submission workflow for an academic
+conference or journal. In addition to addressing a pressing need for
 the scientific community, we further speculate on the potential
 contribution to the wider software development community of services
 which automate \emph{de novo} compilation and testing of code from
@@ -107,7 +110,7 @@ surrounding software sustainability (and thus reproducibility) in both
 their specific research domain as well as more broadly for
 computational science; a desirable outcome would be a clear
 specification to encourage, enable and ultimately enforce
-sustinability. Enumerating an explicit standard -- one that would emerge,
+sustainability. Enumerating an explicit standard -- one that would emerge,
 develop and evolve -- would have a clear benefit for researchers as
 well as the wider community as a whole.
 
@@ -187,19 +190,22 @@ seeing the wider utility of creating and sharing reusable scientific
 software, workflows and web
 services~\cite{davidson+freire:2008,crick-et-al:2009b,goble:2014,oabarriaga-et-al:2014},
 with the emergence of a range of online platforms to support sharing
-of data and other research artefacts, including
-figshare\footnote{\url{http://figshare.com/}}, Open Science
-Framework\footnote{\url{https://osf.io/}} and
-GitHub\footnote{\url{https://github.com/}}. While there has been a
-revolution in the sharing and dissemination of published papers
-(\emph{open access}) and the subsequent discussions relating to the
-sharing of protocols and materials (\emph{open
+of data and other research artefacts, including figshare, Open Science
+Framework and GitHub. While there has been a revolution in the sharing
+and dissemination of published papers (\emph{open access}) and the
+subsequent discussions relating to the sharing of protocols and
+materials (\emph{open
 science})~\cite{pantonprinciples:2010,force11:2011,rssaaoe:2012}, the
 ability of a researcher to {\emph{(a)}} keep track of the increasing
 number of research outputs in their domain~\cite{parolo-et-al:2015}
 and {\emph{(b)}} take these published results and data and reimplement
 the described workflow remains
 difficult~\cite{peng:2011,koop-et-al:2011,sandve-et-al:2013,wilson-et-al:2014}.
+
+% \footnote{\url{http://figshare.com/}}
+% \footnote{\url{https://osf.io/}}
+% \footnote{\url{https://github.com/}}
+
 
 However, there has been promising work in this area, particularly
 around benchmarking and
@@ -278,21 +284,6 @@ processes: compilation and testing in a new machine, a continuous
 integration strategy for code commits and the ability to add and
 remove benchmarks to the test set.
 
-We use a running example based upon
-{\emph{BioModelAnalyzer}}\footnote{Available to use online:
-\url{http://biomodelanalyzer.research.microsoft.com/}}, a tool for the
-development and analysis (simulation, model checking) of a specific
-class of formal models for biology, which has been described by the
-authors over a series of VMCAI and CAV
-papers~\cite{cook-et-al:2011,benque-et-al:2012,cook-et-al:2014}.  The
-tool specifically allows users to test for model \emph{stability};
-that is, a bespoke algorithm proves that for all initial states a
-model always ends in a single, unique fixpoint. We have chosen this
-example due to our familiarity with the tool, and to highlight
-historical examples where a software sustainability and
-reproducibility service would have supported both toolchain
-development and algorithm discovery.
-
 \section{A Specification for Sustainable Research Software Engineering}\label{spec}
 
 A service for sustainable research software engineering should
@@ -309,7 +300,22 @@ the developer, to widen the testing and identify potential bugs;
 publications or other publicly-accessible datasets. 
 \end{enumerate}
 
-\subsection{{\emph{There Are Two Types of People}}}
+We use a running example based upon
+{\emph{BioModelAnalyzer}}\footnote{Available online:
+\url{http://biomodelanalyzer.research.microsoft.com/}}, a tool for the
+development and analysis (simulation, model checking) of a specific
+class of formal models for biology, which has been described by the
+authors over a series of VMCAI and CAV
+papers~\cite{cook-et-al:2011,benque-et-al:2012,cook-et-al:2014}.  The
+tool specifically allows users to test for model \emph{stability};
+that is, a bespoke algorithm proves that for all initial states a
+model always ends in a single, unique fixpoint. We have chosen this
+example due to our familiarity with the tool, and to highlight
+historical examples where a software sustainability and
+reproducibility service would have supported both toolchain
+development and algorithm discovery.
+
+\subsection{There are Two Types of People}
 
 \begin{figure*}[!htp]
 	\centering
@@ -319,17 +325,17 @@ publications or other publicly-accessible datasets.
 \end{figure*}
 
 To address these needs, we propose that the service should follow the
-workflow presented in Figure~\ref{schematic}. Two main classes of user are
-defined; developers, who generate code; and modellers, who generate
-new benchmarks. An individual might in practice play either or both of
-these roles; here the roles serve to define ways in which people
-interact with the system. A developer writes new code, which is
-periodically pushed to a public repository such as GitHub. Through
-integration with the repository, the server responds to new code by
-undergoing a process of pulling the code from the repository,
-downloading required dependencies, and compiling the code. If this
-stage fails, the developer is informed and the workflow ends. If the
-code is successfully compiled, two stages of testing are
+workflow presented in Figure~\ref{schematic}. Two main classes of user
+are initially defined: developers, who generate code; and modellers,
+who generate new benchmarks. An individual might in practice play
+either or both of these roles; here the roles serve to define ways in
+which people interact with the system. A developer writes new code,
+which is periodically pushed to a public repository such as
+GitHub. Through integration with the repository, the server responds
+to new code by undergoing a process of pulling the code from the
+repository, downloading required dependencies, and compiling the
+code. If this stage fails, the developer is informed and the workflow
+ends. If the code is successfully compiled, two stages of testing are
 performed.
 
 The first stage (labelled {\emph{Test}} in Figure~\ref{schematic}),
@@ -343,25 +349,26 @@ a known property, and the results recorded. These results can then be
 stored in a database, with a note of the commit ID, and available
 through a web interface for future audit and analysis.
 
-The service must fit easily into the developer workflow; as noted in
-Section~\ref{rollout} we expect that there will be some costs to the
-users in terms of the time required to ensure that the code compiles
-and runs on the service. To minimise this, the service needs to
-connect to standard code repositories, automatically detecting and
-responding to new versions of the code and updates to dependencies,
-running tests for every new code commit.
+The service must fit easily into the developer
+workflow~\cite{venters-et-al:2014}; as noted in Section~\ref{rollout}
+we expect that there will naturally be some costs to the users in
+terms of the time required to ensure that the code compiles and runs
+on the service. To minimise this, the service needs to easy connect to
+common code repositories, automatically detecting and responding to
+new versions of the code and updates to dependencies, running tests
+for every new code commit.
 
 \subsection{{\emph{de Novo}} Build Environments}
 
-To address the socio-cultural issues discussed earlier, a
+To begin to address the socio-cultural issues discussed earlier, a
 service such as this must require minimal developer intervention.
 This serves multiple purposes -- through automation for example, the
 service can be enabled to compile new code and test new benchmarks
 trivially. This also forces the developer to make publicly available
-their local workarounds (i.e. hacks and workflow ``glue''). As such, this requires the
-developer to make the project dependencies clearly available, and
-enables future changes in the dependencies (such as a library update)
-to be tested automatically too.
+their local workarounds (i.e. hacks and workflow ``glue''). As such,
+this requires the developer to make the project dependencies clearly
+available, and enables future changes in the dependencies (such as a
+library update) to be tested automatically too.
 
 Throughout the lifetime of the {\emph{BioModelAnalyzer}} tool,
 development has been shared between a number of developers, each
@@ -385,7 +392,7 @@ trivially through the proposed service; such undocumented commands
 would lead to all tests failing until explicitly added to the build
 process.
 
-\subsection{Tool refinement}
+\subsection{Tool Refinement}
 
 In contrast to the developer role, a modeller supplies benchmarks for
 a piece of code to test against. These do not require that the latest
@@ -458,24 +465,33 @@ introduced by third parties.
 \subsection{``{\emph{I'm First!}}''}
 
 Another issue is around performance comparisons of benchmarks: how can
-we estimate, compare and evaluate raw performance in the cloud? Testing new
-algorithms on benchmarks is in the first instance about pass/fail, but
-very soon the focus is on raw performance. Benchmark tables are about out-performing other
-algorithms, other tools. But, if the whole verification workflow is
-running on the cloud, then acquiring and evaluating raw performance numbers is not
-immediately feasible. There is no cloud equivalent of {\texttt{top}} or
+we estimate, compare and evaluate raw performance in the cloud?
+Testing new algorithms on benchmarks is in the first instance about
+pass/fail, but very soon the focus is on raw performance. Benchmark
+tables are about out-performing other algorithms, other tools. But, if
+the whole verification workflow is running on the cloud, then
+acquiring and evaluating raw performance numbers is not immediately
+feasible. There is no cloud equivalent of {\texttt{top}} or
 {\texttt{time}} that gives user--resource statistics. There is too
-much infrastructure interference/dependence --- with VMs spinning up, being torn
-down, migrating, the bus being used by other VMs, etc --- to obtain
-faithful numbers for the user/process/VM itself. Projects such
-as Recomputation.org\footnote{\url{http://recomputation.org/}} have
-been focusing on using virtual machines in the cloud to freeze, and
-later unfreeze, computational experiments; while this approach is not
-the complete solution, it is certainly a move in the right
+much infrastructure interference/dependence --- with VMs spinning up,
+being torn down, migrating, the bus being used by other VMs, etc ---
+to obtain easily comparable numbers for the user/process/VM
+itself. Projects such as
+Recomputation.org\footnote{\url{http://recomputation.org/}} have been
+focusing on using virtual machines in the cloud to freeze, and later
+unfreeze, computational experiments; while this approach is not the
+complete solution, it is certainly a move in the right
 direction~\cite{arabas-et-al:2014}. Nevertheless, the project's
 primary aim is to validate recomputation~\cite{gent:2013}, with
 performance a secondary consideration~\cite{gent+kotthoff:2014}, thus
-making this a key avenue for further investigation.
+making this a key avenue for further investigation. Nevertheless, we
+do not overlook or neglect performance modelling as a key metric for
+certain researchers, as this is clearly important. While it is
+non-trivial to accurately assess the time required to solve problems
+in the cloud, it is certainly possible to construct cloud
+computational models and assess how measured times line up with bounds
+derived from the model.
+
 
 \subsection{Running Arbitrary Code}
 
@@ -483,14 +499,14 @@ There are clearly significant potential security concerns around
 providing open cyberinfrastructure that pulls, compiles and runs
 arbitrary code as part of an autonomous continuous integration
 framework; we need to consider precisely how this infrastructure would
-interact with other open services, as well as privileges it would
+interact with other open services, as well as the privileges it would
 require to run as an autonomous cloud service. Nevertheless, there are
 existing models of sandboxing and privilege restriction from elastic
 cloud computation providers that could be further developed and
 applied.
 
 
-\section{A Reproducibility Workflow for a Computational Research Community}
+\section{A Sustainable Software Workflow for a Computational Research Community}
 \label{rollout}
 
 Following the proposal of such a system, the question becomes:
@@ -545,21 +561,21 @@ The key question for different research communities then becomes:
 requirement creates a set of new costs to researchers, both in terms
 of time spent ensuring that their tools work on the centralised system
 (in addition to their local implementation), but also potentially in
-terms of equipment (in terms of running the system). Such costs may be
-easier to bear for some researchers compared to others, especially those
-with large research groups who can more easily distribute the tasks,
-and it is important that the service does not present a barrier to
-early career researchers and those with efficient budgets (this type
-of cost analysis is not unique to reproducibility efforts -- it has
-been estimated that a shift to becoming exclusively open access for a
-journal may lead to a ten-fold increase in computer science
+terms of equipment (in terms of running the system).  Such costs may
+be easier to bear for some researchers compared to others, especially
+those with large research groups who can more easily distribute the
+tasks, and it is important that the service does not present a barrier
+to early career researchers and those with efficient budgets (this
+type of cost analysis is not unique to reproducibility efforts -- it
+has been estimated that a shift to becoming exclusively open access
+for a journal may lead to a ten-fold increase in computer science
 publication costs~\cite{vardi-cacm-2014}). Another advantage of such a
 service however is that it sets a clear minimum standard for
-reproducibility in computational research. It does not impose a specific set
-of licences (a limited licence for testing would be all that is
-necessary). By its nature, it can be uniformly applied to all users in
-a conference, preventing the ``weaponisation of reproducibility'' that
-has been highlighted as a potential
+reproducibility in computational research. It does not impose a
+specific set of licences (a limited licence for testing would be all
+that is necessary). By its nature, it can be uniformly applied to all
+users in a conference, preventing the ``weaponisation of
+reproducibility'' that has been highlighted as a potential
 weakness\footnote{\url{http://simplystatistics.org/2015/03/13/de-weaponizing-reproducibility/}}.
 
 
@@ -568,16 +584,27 @@ weakness\footnote{\url{http://simplystatistics.org/2015/03/13/de-weaponizing-rep
 The benefits to the community from a cultural change to foster and
 favour reproducibility are clear and as such we should aim through the
 development and adoption of open cyberinfrastructure, software
-toolchains and workflow to mitigate these costs. Furthermore, we can
-reasonably expect the needs of the community to evolve over time, and
-initial implementations of the platform may require refinement in
-response to user feedback. As such, if the community is to move to
-requiring reproducibility, it seems most reasonable that this is
-staggered over a number of years to allow for both of these elements
-to develop, until eventually all researchers are required to use the
-service. This plan balances competing needs within the community, and
-would reduce the disruption for uptake by gradually introducing it to
-researchers.
+toolchains and workflow to mitigate these costs. Real world
+implementation of the idea would require the development of a
+standard, and in order to be successful, would require near
+simultaneous participation from all major journals and conferences.
+Since compliance would add some burden on the authors and the
+reviewers, without uniform adoption, journals and conferences adopting
+the service would be at a disadvantage. We recognise this is where the
+wider socio-cultural levers within academia will clash with the
+ongoing push for open research (along with new and evolving forms of
+research dissemination, reward and recognition).
+
+However, we can reasonably expect the needs of the community to evolve
+over time, and initial implementations of the platform will naturally
+require refinement in response to user/community feedback. As such, if
+different communities are to move to requiring models and software
+sustainability and reproducibility, it seems most reasonable that this
+is staggered over a number of years to allow for both of these
+elements to develop, until eventually all researchers are required to
+use the service. This plan balances competing needs within the
+community, and would reduce the disruption for uptake by gradually
+introducing it to researchers.
 
 \begin{itemize}
 \item {\textbf{Year {\emph{t}}:}} Offer the service as an optional extra in the
@@ -592,13 +619,17 @@ researchers.
   review process.
 \end{itemize}
 
-This open discussion, understanding and acceptance of what
-reproducibility means for the wider computational research community
-is clearly important. It is imperative that we see it as worthwhile
-and address it, but we now have to move beyond manifestos, pledges and
-top tips: as researchers, we all need to publicly acknowledge that
-this is worthwhile and put concrete measures in place to address it,
-or stop going on about it.
+This open discussion, understanding and acceptance of what software
+sustainability -- and more generally, reproducibility -- means for the
+wider computational research community is clearly important. It is
+imperative that we see it as worthwhile and address it, but we now
+have to move beyond manifestos, pledges and top tips: as researchers,
+we all need to publicly acknowledge that this is worthwhile and put
+concrete measures in place to address it, or stop going on about it as
+being a laudable aspiration but impossible to achieve in practical
+terms. We very much look forward to being a part of a community of
+researchers developing this idea, culture and infrastructure over the
+coming months.
 
 %\newpage
 
@@ -606,7 +637,7 @@ or stop going on about it.
 % number - used to balance the columns on the last page
 % adjust value as needed - may need to be readjusted if
 % the document is modified later
-%\IEEEtriggeratref{37}
+\IEEEtriggeratref{50}
 % The "triggered" command can be changed if desired:
 %\IEEEtriggercmd{\enlargethispage{-5in}}
 
